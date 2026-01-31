@@ -5,33 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World</title>
     <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333;
+            --text-secondary: #666;
+            --border-color: #ddd;
+            --accent-color: #4CAF50;
+            --footer-text: #999;
+        }
+        
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --border-color: #444;
+            --accent-color: #66bb6a;
+            --footer-text: #888;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 800px;
             margin: 50px auto;
             padding: 20px;
             line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
+        
         h1 {
-            color: #333;
-            border-bottom: 3px solid #4CAF50;
+            color: var(--text-color);
+            border-bottom: 3px solid var(--accent-color);
             padding-bottom: 10px;
         }
+        
         p {
-            color: #666;
+            color: var(--text-secondary);
             text-align: justify;
         }
+        
         footer {
             margin-top: 40px;
             padding-top: 20px;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid var(--border-color);
             text-align: center;
-            color: #999;
+            color: var(--footer-text);
             font-size: 0.9em;
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+        
+        .theme-toggle:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
 <body>
+    <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
+    
     <h1>Hello World</h1>
     <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
@@ -47,5 +95,28 @@
     <footer>
         <p>&copy; 2026 Test Workflow Project | Built with ❤️</p>
     </footer>
+    
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        
+        // Load saved theme or default to light
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateButton(savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateButton(newTheme);
+        });
+        
+        function updateButton(theme) {
+            themeToggle.textContent = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+        }
+    </script>
 </body>
 </html>
