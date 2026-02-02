@@ -106,12 +106,59 @@
         .theme-toggle:active {
             transform: scale(0.95);
         }
+        
+        .clock-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+            border: 2px solid var(--border-color);
+        }
+        
+        [data-theme="dark"] .clock-container {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .clock {
+            font-family: 'Courier New', monospace;
+            font-size: 3em;
+            font-weight: bold;
+            color: var(--accent-color);
+            letter-spacing: 0.1em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .clock-label {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            letter-spacing: 0.05em;
+        }
+        
+        .time-unit {
+            display: inline-block;
+            margin: 0 5px;
+        }
+        
+        .milliseconds {
+            font-size: 0.6em;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
     <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
     
     <h1 id="heroText"></h1>
+    
+    <div class="clock-container">
+        <div class="clock" id="digitalClock">
+            <span class="time-unit" id="hours">00</span>:<span class="time-unit" id="minutes">00</span>:<span class="time-unit" id="seconds">00</span><span class="time-unit milliseconds">.<span id="milliseconds">000</span></span>
+        </div>
+        <div class="clock-label">DIGITAL CLOCK</div>
+    </div>
+    
     <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
@@ -170,6 +217,27 @@
         function updateButton(theme) {
             themeToggle.textContent = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
         }
+        
+        // Digital clock
+        function updateClock() {
+            const now = new Date();
+            
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+            
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+            document.getElementById('milliseconds').textContent = milliseconds;
+            
+            // Update every 10ms for smooth millisecond display
+            requestAnimationFrame(updateClock);
+        }
+        
+        // Start clock when page loads
+        updateClock();
     </script>
 </body>
 </html>
